@@ -9,4 +9,7 @@ export class SummonerV4Controller {
   static async upsertByName(ctx:Router.RouterContext) {
     ctx.body = 'Not Implemented';
   }
+  static async getByAccountId(ctx:Router.RouterContext) {
+    ctx.body = 'Not Implemented';
+  }
 }

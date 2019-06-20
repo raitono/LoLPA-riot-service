@@ -6,6 +6,7 @@ const v4Router: Router = new Router({ prefix: '/v4' });
 const summonerv4Router: Router = new Router({ prefix: '/summoner' });
 
 summonerv4Router.get('/:name', SummonerV4Controller.getByName);
+summonerv4Router.get('/account/:accountId', SummonerV4Controller.getByAccountId);
 summonerv4Router.put('/:name', SummonerV4Controller.upsertByName);
 
 v4Router.use(
