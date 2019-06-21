@@ -1,7 +1,6 @@
 import app from './app';
 import { AddressInfo } from 'net';
 import axios from 'axios';
-import { POINT_CONVERSION_COMPRESSED } from 'constants';
 const debug: any = require('debug')('summoner-service:server');
 
 const server = app.listen(0);
