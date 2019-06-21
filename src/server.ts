@@ -10,7 +10,7 @@ const register = () => {
   debug('registering...');
 
   // tslint:disable-next-line: max-line-length
-  axios.put(`${process.env.REGISTRY_URL}:${process.env.REGISTRY_PORT}/service/register/${process.env.SERVICE_NAME}/${process.env.SERVICE_VERSION}/${port}`)
+  axios.put(`${process.env.REGISTRY_URL}:${process.env.REGISTRY_PORT}/service/register/${process.env.SERVICE_NAME}/${process.env.npm_package_version}/${port}`)
     .then((res) => {
       debug(res.data);
       debug('registed!');
