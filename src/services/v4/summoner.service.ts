@@ -8,4 +8,7 @@ export class SummonerV4Service {
   static async getByName(name:string) {
     return kayn.Summoner.by.name(name);
   }
+  static async getByAccountId(accountId:string) {
+    return kayn.Summoner.by.accountID(accountId);
+  }
 }

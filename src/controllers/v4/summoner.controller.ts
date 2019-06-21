@@ -10,6 +10,6 @@ export class SummonerV4Controller {
     ctx.body = 'Not Implemented';
   }
   static async getByAccountId(ctx:Router.RouterContext) {
-    ctx.body = 'Not Implemented';
+    ctx.body = await SummonerV4Service.getByAccountId(ctx.params['accountId']);
   }
 }
