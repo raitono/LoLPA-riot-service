@@ -1,4 +1,4 @@
-import { Kayn, KaynClass } from 'kayn';
+import { Kayn } from 'kayn';
 
 const debug: any = require('debug')('summoner-service:SummonerV4Service');
 

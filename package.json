@@ -4,13 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "postinstall": "npm i -g npx",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prebuild": "rm -rf out/",
     "build": "tsc",
     "build:watch": "npm run prebuild && tsc -w",
     "start": "node out/server.js",
     "start:watch": "nodemon out/server.js",
-    "dev": "npm run start:watch"
+    "dev": "npm run start:watch",
+    "migrate:latest": "npx knex migrate:latest"
   },
   "repository": {
     "type": "git",
@@ -28,10 +30,13 @@
     "dotenv-safe": "^6.1.0",
     "http-status-codes": "^1.3.2",
     "kayn": "^0.9.11",
+    "knex": "^0.17.6",
     "koa": "^2.7.0",
     "koa-bodyparser": "^4.2.1",
     "koa-json": "^2.0.2",
     "koa-router": "^7.4.0",
+    "mysql2": "^1.6.5",
+    "objection": "^1.6.9",
     "supports-color": "^7.0.0"
   },
   "devDependencies": {
