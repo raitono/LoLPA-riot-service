@@ -2,9 +2,12 @@ import { Model } from 'objection';
 
 export class Summoner extends Model {
   puuid: string;
-  profileIconId: number;
-  summonerLevel: number;
+  id: string;
+  accountId: string;
   name: string;
+  summonerLevel: number;
+  profileIconId: number;
+  revisionDate: Date;
   lastUpdated: Date;
 
   static get tableName() {
