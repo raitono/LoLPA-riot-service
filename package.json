@@ -12,7 +12,8 @@
     "start": "node out/server.js",
     "start:watch": "nodemon out/server.js",
     "dev": "npm run start:watch",
-    "migrate:latest": "npx knex migrate:latest"
+    "migrate:latest": "npx knex migrate:latest",
+    "migrate:rollback": "npx knex migrate:rollback"
   },
   "repository": {
     "type": "git",
