@@ -7,10 +7,16 @@ import * as HttpStatus from 'http-status-codes';
 import * as bodyParser from 'koa-bodyparser';
 import * as json from 'koa-json';
 import * as Koa from 'koa';
+import Knex = require('knex');
+import { Model } from 'objection';
 const app:Koa = new Koa();
 
 // My imports
 import { v4Router } from './routes';
+
+// Database setup
+const knex: Knex = Knex(require('../knexfile')[process.env.NODE_ENV]);
+Model.knex(knex);
 
 // Generic error handling middleware.
 app.use(async (ctx: Koa.Context, next: () => Promise<any>) => {
