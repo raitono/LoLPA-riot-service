@@ -1,6 +1,6 @@
 // Global setup
 require('dotenv').config();
-const debug: any = require('debug')('summoner-service:app');
+const debug: any = require('debug')('riot-service:app');
 
 // Third party imports
 import * as HttpStatus from 'http-status-codes';
@@ -31,7 +31,7 @@ app.use(json());
 app.use(v4Router.routes());
 app.use(v4Router.allowedMethods());
 
-app.use(async (ctx:Koa.Context) => (ctx.body = { msg: 'Hello summoner-service!' }));
+app.use(async (ctx:Koa.Context) => (ctx.body = { msg: 'Hello riot-service!' }));
 
 // Application error logging.
 app.on('error', console.error);

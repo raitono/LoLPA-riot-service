@@ -1,6 +1,6 @@
 import { Kayn } from 'kayn';
 
-const debug: any = require('debug')('summoner-service:SummonerV4Service');
+const debug: any = require('debug')('riot-service:SummonerV4Service');
 
 const kayn = Kayn(process.env.RIOT_API_KEY)();
 

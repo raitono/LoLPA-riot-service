@@ -1,5 +1,5 @@
 {
-  "name": "lolpa-summoner-service",
+  "name": "lolpa-riot-service",
   "version": "0.0.0",
   "description": "",
   "main": "index.js",
@@ -16,14 +16,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/raitono/LoLPA-summoner-service.git"
+    "url": "git+https://github.com/raitono/LoLPA-riot-service.git"
   },
   "author": "raitono",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/raitono/LoLPA-summoner-service/issues"
+    "url": "https://github.com/raitono/LoLPA-riot-service/issues"
   },
-  "homepage": "https://github.com/raitono/LoLPA-summoner-service#readme",
+  "homepage": "https://github.com/raitono/LoLPA-riot-service#readme",
   "dependencies": {
     "axios": "^0.19.0",
     "debug": "^4.1.0",

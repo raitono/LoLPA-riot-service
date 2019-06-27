@@ -1,1 +1,1 @@
-# LoLPA-summoner-service
+# LoLPA-riot-service

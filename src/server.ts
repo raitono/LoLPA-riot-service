@@ -1,7 +1,7 @@
 import app from './app';
 import { AddressInfo } from 'net';
 import axios from 'axios';
-const debug: any = require('debug')('summoner-service:server');
+const debug: any = require('debug')('riot-service:server');
 
 const server = app.listen(0);
 const port = (<AddressInfo>server.address()).port;
