@@ -12,7 +12,7 @@ import { Model } from 'objection';
 const app:Koa = new Koa();
 
 // My imports
-import { v4Router } from './routes';
+import { v4Router, staticRouter } from './routes';
 
 // Database setup
 const knex: Knex = Knex(require('../knexfile')[process.env.NODE_ENV]);
@@ -36,6 +36,8 @@ app.use(json());
 // Route middleware
 app.use(v4Router.routes());
 app.use(v4Router.allowedMethods());
+app.use(staticRouter.routes());
+app.use(staticRouter.allowedMethods());
 
 app.use(async (ctx:Koa.Context) => (ctx.body = { msg: 'Hello riot-service!' }));
 
