@@ -7,6 +7,7 @@ export class ChampionController {
     ctx.body = await ChampionService.getChampions();
   }
   static async patchChampions(ctx:Router.RouterContext) {
-    ctx.body = await ChampionService.patchChampions();
+    await ChampionService.patchChampions();
+    ctx.status = 200;
   }
 }

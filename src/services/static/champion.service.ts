@@ -96,7 +96,5 @@ export class ChampionService {
       champions,
       { relate: true, unrelate: true },
     );
-
-    return 'Champions patched';
   }
 }
