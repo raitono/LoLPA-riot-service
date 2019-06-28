@@ -1,4 +1,5 @@
 import { Model } from 'objection';
+import { Tag } from './tag.model';
 
 export class Champion extends Model {
   id: number;
@@ -37,6 +38,7 @@ export class Champion extends Model {
   attackdamageperlevel: number;
   attackspeedperlevel: number;
   attackspeed: number;
+  tags: Tag[];
 
   static get tableName() {
     return 'champions';
@@ -44,4 +46,18 @@ export class Champion extends Model {
   static get idColumn() {
     return 'id';
   }
+  static relationMappings = {
+    tags: {
+      relation: Model.ManyToManyRelation,
+      modelClass: Tag,
+      join: {
+        from: 'champions.id',
+        through: {
+          from: 'championTags.championId',
+          to: 'championTags.tagId',
+        },
+        to: 'tags.id',
+      },
+    },
+  };
 }

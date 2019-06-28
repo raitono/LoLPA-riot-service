@@ -1,5 +1,6 @@
 import { Kayn } from 'kayn';
 import { Champion } from '../../models/champion.model';
+import { Tag } from '../../models/tag.model';
 
 const debug: any = require('debug')('riot-service:ChampionService');
 
@@ -11,11 +12,45 @@ export class ChampionService {
   }
   static async patchChampions() {
     const c: {[key:string]: Object} = (await this.getChampions()).data;
+    let dbTags: Tag[] = await Tag.query();
+    const apiTags: Set<string> = new Set();
+    const tags: Tag[] = [];
     const champions: Champion[] = [];
+
+    // Grab all the tags from the API
+    // Use a Set to prevent duplicates
+    Object.keys(c).forEach((championId) => {
+      const apiChampion = c[championId];
+      apiChampion.tags.forEach((tag: string) => {
+        apiTags.add(tag);
+      });
+    });
+
+    // Collect all tags we already have, plus any we don't to get a complete list
+    // First, find the union
+    tags.push(...dbTags.filter(db => apiTags.has(db.name))
+    // Then add the difference,
+    .concat([...apiTags]
+      // by finding any in the API not in the DB
+      .filter(tag => !dbTags.find(t => t.name === tag))
+        // Finally, convert the string only API names into a Tag object
+        .map((name: string) => {
+          const tag = new Tag();
+          tag.id = null;
+          tag.name = name;
+          return tag;
+        })));
+
+    // Upsert the tags so we are ready for the Champion upsert
+    await Tag.query().upsertGraph(tags);
+
+    // Refresh our DB tags to get any new ones
+    dbTags = await Tag.query();
 
     Object.keys(c).forEach((championId) => {
       const apiChampion = c[championId];
       const dbChampion = new Champion();
+
       dbChampion.id = apiChampion.id;
       dbChampion.name = apiChampion.name;
       dbChampion.title = apiChampion.title;
@@ -52,14 +87,16 @@ export class ChampionService {
       dbChampion.attackdamageperlevel = apiChampion.stats.attackdamageperlevel;
       dbChampion.attackspeedperlevel = apiChampion.stats.attackspeedperlevel;
       dbChampion.attackspeed = apiChampion.stats.attackspeed;
+      dbChampion.tags = dbTags.filter(t => apiChampion.tags.includes(t.name));
 
       champions.push(dbChampion);
     });
 
-    await Promise.all(champions.map(async (champion) => {
-      debug(`Pushing ${champion.name}`);
-      await Champion.query().upsertGraph(champion, { insertMissing: true, noDelete: true });
-    }));
+    await Champion.query().upsertGraph(
+      champions,
+      { relate: true, unrelate: true },
+    );
+
     return 'Champions patched';
   }
 }
