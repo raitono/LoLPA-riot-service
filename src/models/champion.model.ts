@@ -2,7 +2,7 @@ import { Model } from 'objection';
 import { Tag } from './tag.model';
 
 export class Champion extends Model {
-  id: number;
+  id: string;
   name: string;
   title: string;
   blurb: string;

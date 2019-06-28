@@ -59,10 +59,54 @@ exports.up = async function (knex: Knex) {
       table.integer('championId');
       table.integer('tagId');
       table.unique(['championId', 'tagId']);
+    })
+    .createTable('items', (table) => {
+      table.string('id').primary().notNullable();
+      table.string('name').notNullable();
+      table.boolean('isRune');
+      table.integer('runeTier');
+      table.string('runeType');
+      table.integer('goldBase');
+      table.integer('goldTotal');
+      table.integer('goldSell');
+      table.boolean('purchasable');
+      table.string('group');
+      table.text('description');
+      table.text('colloq');
+      table.text('plaintext');
+      table.boolean('consumed');
+      table.integer('stacks');
+      table.integer('depth');
+      table.boolean('consumeOnFull');
+      table.integer('specialRecipe');
+      table.boolean('inStore');
+      table.boolean('hideFromAll');
+      table.string('requiredChampion');
+      table.string('requiredAlly');
+      table.string('imageFull');
+      table.string('imageSprite');
+      table.string('imageGroup');
+      table.integer('imageX');
+      table.integer('imageY');
+      table.integer('imageW');
+      table.integer('imageH');
+    })
+    .createTable('itemTags', (table) => {
+      table.integer('itemId');
+      table.integer('tagId');
+      table.unique(['itemId', 'tagId']);
+    })
+    .createTable('maps', (table) => {
+      table.integer('id').primary().notNullable();
+    })
+    .createTable('itemStats', (table) => {
+      table.integer('id').primary().notNullable();
+      table.string('itemId');
     });
 };
 
 exports.down = async function (knex: Knex) {
   return knex.schema.dropTable('summoners').dropTable('championTags')
-    .dropTable('champions').dropTable('tags');
+    .dropTable('champions').dropTable('itemTags').dropTable('tags').dropTable('items')
+    .dropTable('maps').dropTable('itemstats');
 };
