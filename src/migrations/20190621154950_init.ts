@@ -102,11 +102,16 @@ exports.up = async function (knex: Knex) {
     .createTable('itemStats', (table) => {
       table.integer('id').primary().notNullable();
       table.string('itemId');
-    });
+    })
+    .createTable('itemBuildPaths', (table) => {
+      table.integer('fromId');
+      table.integer('intoId');
+    })
+    ;
 };
 
 exports.down = async function (knex: Knex) {
   return knex.schema.dropTable('summoners').dropTable('championTags')
     .dropTable('champions').dropTable('itemTags').dropTable('tags').dropTable('items')
-    .dropTable('maps').dropTable('itemstats');
+    .dropTable('maps').dropTable('itemstats').dropTable('itemBuildPaths');
 };

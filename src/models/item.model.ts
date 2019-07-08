@@ -36,8 +36,8 @@ export class Item extends Model {
   tags: Tag[];
   maps: Map[];
   stats: ItemStat[];
-  from: any[];
-  into: any[];
+  from: Item[];
+  into: Item[];
 
   static get tableName() {
     return 'items';
@@ -76,6 +76,30 @@ export class Item extends Model {
       join: {
         from: 'items.id',
         to: 'itemStats.itemId',
+      },
+    },
+    from: {
+      relation: Model.ManyToManyRelation,
+      modelClass: Item,
+      join: {
+        from: 'items.id',
+        through: {
+          from: 'itemBuildPaths.intoId',
+          to: 'itemBuildPaths.fromId',
+        },
+        to: 'items.id',
+      },
+    },
+    into: {
+      relation: Model.ManyToManyRelation,
+      modelClass: Item,
+      join: {
+        from: 'items.id',
+        through: {
+          from: 'itemBuildPaths.fromId',
+          to: 'itemBuildPaths.intoId',
+        },
+        to: 'items.id',
       },
     },
   };
