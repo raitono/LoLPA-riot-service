@@ -12,7 +12,6 @@ export class ChampionService {
   }
   static async patchChampions() {
     const c: {[key:string]: Object} = (await this.getChampions()).data;
-    let dbTags: Tag[] = await Tag.query();
     const apiTags: Set<string> = new Set();
     const tags: Tag[] = [];
     const champions: Champion[] = [];
@@ -26,26 +25,9 @@ export class ChampionService {
       });
     });
 
-    // Collect all tags we already have, plus any we don't to get a complete list
-    // First, find the union
-    tags.push(...dbTags.filter(db => apiTags.has(db.name))
-    // Then add the difference,
-    .concat([...apiTags]
-      // by finding any in the API not in the DB
-      .filter(tag => !dbTags.find(t => t.name === tag))
-        // Finally, convert the string only API names into a Tag object
-        .map((name: string) => {
-          const tag = new Tag();
-          tag.id = null;
-          tag.name = name;
-          return tag;
-        })));
+    await Tag.upsertGraphFromList(apiTags);
 
-    // Upsert the tags so we are ready for the Champion upsert
-    await Tag.query().upsertGraph(tags);
-
-    // Refresh our DB tags to get any new ones
-    dbTags = await Tag.query();
+    const dbTags: Tag[] = await Tag.query();
 
     Object.keys(c).forEach((championId) => {
       const apiChampion = c[championId];
