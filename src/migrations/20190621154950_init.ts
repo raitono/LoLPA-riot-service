@@ -4,7 +4,7 @@ import Knex = require('knex');
 exports.up = async function (knex: Knex) {
   return knex.schema
     .createTable('summoners', (table) => {
-      table.string('puuid', 100).primary().notNullable();
+      table.string('puuid', 100).primary();
       table.string('id', 63).notNullable();
       table.string('accountId', 56).notNullable();
       table.string('name', 50).notNullable();
@@ -14,7 +14,7 @@ exports.up = async function (knex: Knex) {
       table.dateTime('lastUpdated').notNullable().defaultTo(knex.fn.now());
     })
     .createTable('champions', (table) => {
-      table.integer('id').primary().notNullable();
+      table.integer('id').primary();
       table.string('name').notNullable();
       table.string('title').notNullable();
       table.text('blurb').notNullable();
@@ -52,13 +52,13 @@ exports.up = async function (knex: Knex) {
       table.decimal('attackspeed', 6, 3).notNullable();
     })
     .createTable('tags', (table) => {
-      table.increments('id').primary().notNullable();
+      table.increments('id').primary();
       table.string('name').notNullable();
     })
     .createTable('championTags', (table) => {
       table.integer('championId');
       table.integer('tagId');
-      table.unique(['championId', 'tagId']);
+      table.primary(['championId', 'tagId']);
     })
     .createTable('items', (table) => {
       table.string('id').primary().notNullable();
@@ -94,18 +94,26 @@ exports.up = async function (knex: Knex) {
     .createTable('itemTags', (table) => {
       table.integer('itemId');
       table.integer('tagId');
-      table.unique(['itemId', 'tagId']);
+      table.primary(['itemId', 'tagId']);
     })
     .createTable('maps', (table) => {
-      table.integer('id').primary().notNullable();
+      table.integer('id').primary();
+    })
+    .createTable('mapItems', (table) => {
+      table.integer('mapId');
+      table.integer('itemId');
+      table.primary(['itemId', 'mapId']);
     })
     .createTable('itemStats', (table) => {
-      table.integer('id').primary().notNullable();
       table.string('itemId');
+      table.string('group');
+      table.decimal('value', 6, 3).notNullable();
+      table.primary(['itemId', 'group']);
     })
     .createTable('itemBuildPaths', (table) => {
       table.integer('fromId');
       table.integer('intoId');
+      table.primary(['fromId', 'intoId']);
     })
     ;
 };
@@ -113,5 +121,5 @@ exports.up = async function (knex: Knex) {
 exports.down = async function (knex: Knex) {
   return knex.schema.dropTable('summoners').dropTable('championTags')
     .dropTable('champions').dropTable('itemTags').dropTable('tags').dropTable('items')
-    .dropTable('maps').dropTable('itemstats').dropTable('itemBuildPaths');
+    .dropTable('maps').dropTable('mapItems').dropTable('itemstats').dropTable('itemBuildPaths');
 };

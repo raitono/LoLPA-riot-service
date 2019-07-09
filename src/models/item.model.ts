@@ -39,39 +39,6 @@ export class Item extends Model {
   from: Item[];
   into: Item[];
 
-  constructor(id: string, data: Object) {
-    super();
-    this.id = id;
-    this.name = data.name || '';
-    this.isRune = data.rune ? data.rune.isRune || false : false;
-    this.runeTier = data.rune ? data.rune.tier || 1 : 1;
-    this.runeType = data.rune ? data.rune.type || 'red' : 'red';
-    this.goldBase = data.gold ? data.gold.base || 0 : 0;
-    this.goldTotal = data.gold ? data.gold.total || 0 : 0;
-    this.goldSell = data.gold ? data.gold.sell || 0 : 0;
-    this.purchasable = data.gold ? data.gold.purchasable || false : false;
-    this.group = data.group || '';
-    this.description = data.description || '';
-    this.colloq = data.colloq || ';';
-    this.plaintext = data.plaintext || '';
-    this.consumed = data.consumed || false;
-    this.stacks = data.stacks || 1;
-    this.depth = data.depth || 1;
-    this.consumeOnFull = data.consumeOnFull || false;
-    this.specialRecipe = data.specialRecipe || 0;
-    this.inStore = data.inStore || true;
-    this.hideFromAll = data.hideFromAll || false;
-    this.requiredChampion = data.requiredChampion || '';
-    this.requiredAlly = data.requiredAlly || '';
-    this.imageFull = data.image ? data.image.full || '' : '';
-    this.imageSprite = data.image ? data.image.sprite || '' : '';
-    this.imageGroup = data.image ? data.image.group || '' : '';
-    this.imageX = data.image ? data.image.x || 0 : 0;
-    this.imageY = data.image ? data.image.y || 0 : 0;
-    this.imageW = data.image ? data.image.w || 0 : 0;
-    this.imageH = data.image ? data.image.h || 0 : 0;
-  }
-
   static get tableName() {
     return 'items';
   }
@@ -136,4 +103,62 @@ export class Item extends Model {
       },
     },
   };
+  static async fromAPI(items: Object) {
+    const id = '1001';
+    const data: Object = items[id];
+
+    const item = new Item();
+    const tags = await Tag.query();
+
+    item.id = id;
+    item.name = data.name || '';
+    item.isRune = data.rune ? data.rune.isRune || false : false;
+    item.runeTier = data.rune ? data.rune.tier || 1 : 1;
+    item.runeType = data.rune ? data.rune.type || 'red' : 'red';
+    item.goldBase = data.gold ? data.gold.base || 0 : 0;
+    item.goldTotal = data.gold ? data.gold.total || 0 : 0;
+    item.goldSell = data.gold ? data.gold.sell || 0 : 0;
+    item.purchasable = data.gold ? data.gold.purchasable || false : false;
+    item.group = data.group || '';
+    item.description = data.description || '';
+    item.colloq = data.colloq || ';';
+    item.plaintext = data.plaintext || '';
+    item.consumed = data.consumed || false;
+    item.stacks = data.stacks || 1;
+    item.depth = data.depth || 1;
+    item.consumeOnFull = data.consumeOnFull || false;
+    item.specialRecipe = data.specialRecipe || 0;
+    item.inStore = data.inStore || true;
+    item.hideFromAll = data.hideFromAll || false;
+    item.requiredChampion = data.requiredChampion || '';
+    item.requiredAlly = data.requiredAlly || '';
+    item.imageFull = data.image ? data.image.full || '' : '';
+    item.imageSprite = data.image ? data.image.sprite || '' : '';
+    item.imageGroup = data.image ? data.image.group || '' : '';
+    item.imageX = data.image ? data.image.x || 0 : 0;
+    item.imageY = data.image ? data.image.y || 0 : 0;
+    item.imageW = data.image ? data.image.w || 0 : 0;
+    item.imageH = data.image ? data.image.h || 0 : 0;
+    item.tags = tags.filter(t => data.tags.includes(t.name));
+    item.maps = Object.keys(data.maps).map((m) => {
+      if (!data.maps[m]) return; // If map id is false, don't return anything.
+
+      const map = new Map();
+      map.id = m;
+      return map;
+    }).filter(Boolean); // Fancy trick to remove falsy values.
+    item.stats = Object.keys(data.stats).map((s) => {
+      const stat = new ItemStat();
+
+      stat.itemId = item.id;
+      stat.group = s;
+      stat.value = data.stats[s];
+
+      return stat;
+    });
+    return item;
+    // return Object.keys(items).map((id) => {
+
+    // });
+  }
 }
