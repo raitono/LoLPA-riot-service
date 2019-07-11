@@ -105,10 +105,11 @@ exports.up = async function (knex: Knex) {
       table.primary(['itemId', 'mapId']);
     })
     .createTable('itemStats', (table) => {
+      table.increments('id').primary();
       table.string('itemId');
       table.string('group');
       table.decimal('value', 6, 3).notNullable();
-      table.primary(['itemId', 'group']);
+      table.unique(['itemId', 'group']);
     })
     .createTable('itemBuildPaths', (table) => {
       table.integer('fromId');

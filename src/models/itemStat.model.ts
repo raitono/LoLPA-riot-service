@@ -1,6 +1,7 @@
 import { Model } from 'objection';
 
 export class ItemStat extends Model {
+  id: number;
   itemId: string;
   group: string;
   value: number;
@@ -9,6 +10,6 @@ export class ItemStat extends Model {
     return 'itemStats';
   }
   static get idColumn() {
-    return ['itemId', 'group'];
+    return 'id';
   }
 }

@@ -25,6 +25,18 @@ export class ItemService {
     await Tag.upsertGraphFromList(apiTags);
 
     const items = await Item.fromAPI(apiItems);
-    debug(items);
+    // debug(apiItems['1001']);
+    debug(items.filter(i => i.id === '1001'));
+
+    try {
+      const t = Item.query().upsertGraph(
+        items.filter(i => i.id === '1001'),
+        { relate: true, unrelate: true, insertMissing: true },
+      ).debug(true);
+
+      await t.execute();
+    } catch (e) {
+      debug(e);
+    }
   }
 }
