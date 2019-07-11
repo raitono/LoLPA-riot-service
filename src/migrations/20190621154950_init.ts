@@ -90,6 +90,8 @@ exports.up = async function (knex: Knex) {
       table.integer('imageY');
       table.integer('imageW');
       table.integer('imageH');
+      table.string('into');
+      table.string('from');
     })
     .createTable('itemTags', (table) => {
       table.integer('itemId');
@@ -111,16 +113,11 @@ exports.up = async function (knex: Knex) {
       table.decimal('value', 6, 3).notNullable();
       table.unique(['itemId', 'group']);
     })
-    .createTable('itemBuildPaths', (table) => {
-      table.integer('fromId');
-      table.integer('intoId');
-      table.primary(['fromId', 'intoId']);
-    })
     ;
 };
 
 exports.down = async function (knex: Knex) {
   return knex.schema.dropTable('summoners').dropTable('championTags')
     .dropTable('champions').dropTable('itemTags').dropTable('tags').dropTable('items')
-    .dropTable('maps').dropTable('mapItems').dropTable('itemstats').dropTable('itemBuildPaths');
+    .dropTable('maps').dropTable('mapItems').dropTable('itemstats');
 };

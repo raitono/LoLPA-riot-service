@@ -2,7 +2,6 @@ import { Model } from 'objection';
 import { Tag } from './tag.model';
 import { Map } from './map.model';
 import { ItemStat } from './itemStat.model';
-import { ItemBuildPath } from './itemBuildPath.model';
 
 export class Item extends Model {
   id: string;
@@ -34,8 +33,8 @@ export class Item extends Model {
   imageY: number;
   imageW: number;
   imageH: number;
-  from: ItemBuildPath[];
-  into: ItemBuildPath[];
+  from: string[];
+  into: string[];
   tags: Tag[];
   maps: Map[];
   stats: ItemStat[];
@@ -45,6 +44,9 @@ export class Item extends Model {
   }
   static get idColumn() {
     return 'id';
+  }
+  static get jsonAttributes() {
+    return ['into'];
   }
   static relationMappings = {
     tags: {
@@ -77,22 +79,6 @@ export class Item extends Model {
       join: {
         from: 'items.id',
         to: 'itemStats.itemId',
-      },
-    },
-    from: {
-      relation: Model.HasManyRelation,
-      modelClass: ItemBuildPath,
-      join: {
-        from: 'items.id',
-        to: 'itemBuildPaths.intoId',
-      },
-    },
-    into: {
-      relation: Model.HasManyRelation,
-      modelClass: ItemBuildPath,
-      join: {
-        from: 'items.id',
-        to: 'itemBuildPaths.fromId',
       },
     },
   };
@@ -133,18 +119,8 @@ export class Item extends Model {
       item.imageY = data.image ? data.image.y || 0 : 0;
       item.imageW = data.image ? data.image.w || 0 : 0;
       item.imageH = data.image ? data.image.h || 0 : 0;
-      item.into = data.into ? data.into.map((i: string) => {
-        const path = new ItemBuildPath();
-        path.fromId = id;
-        path.intoId = i;
-        return path;
-      }) || [] : [];
-      item.from = data.from ? data.from.map((i: string) => {
-        const path = new ItemBuildPath();
-        path.fromId = i;
-        path.intoId = id;
-        return path;
-      }) || [] : [];
+      item.into = data.into;
+      item.from = data.from;
       item.tags = tags.filter(t => data.tags.includes(t.name));
 
       item.maps = Object.keys(data.maps).map((m) => {
