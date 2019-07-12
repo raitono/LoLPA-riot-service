@@ -99,7 +99,15 @@ exports.up = async function (knex: Knex) {
       table.primary(['itemId', 'tagId']);
     })
     .createTable('maps', (table) => {
-      table.integer('id').primary();
+      table.string('id').primary();
+      table.string('name');
+      table.string('imageFull');
+      table.string('imageSprite');
+      table.string('imageGroup');
+      table.integer('imageX');
+      table.integer('imageY');
+      table.integer('imageW');
+      table.integer('imageH');
     })
     .createTable('mapItems', (table) => {
       table.integer('mapId');

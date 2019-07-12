@@ -48,40 +48,42 @@ export class Item extends Model {
   static get jsonAttributes() {
     return ['into'];
   }
-  static relationMappings = {
-    tags: {
-      relation: Model.ManyToManyRelation,
-      modelClass: Tag,
-      join: {
-        from: 'items.id',
-        through: {
-          from: 'itemTags.itemId',
-          to: 'itemTags.tagId',
+  static get relationMappings() {
+    return {
+      tags: {
+        relation: Model.ManyToManyRelation,
+        modelClass: Tag,
+        join: {
+          from: 'items.id',
+          through: {
+            from: 'itemTags.itemId',
+            to: 'itemTags.tagId',
+          },
+          to: 'tags.id',
         },
-        to: 'tags.id',
       },
-    },
-    maps: {
-      relation: Model.ManyToManyRelation,
-      modelClass: Map,
-      join: {
-        from: 'items.id',
-        through: {
-          from: 'mapItems.itemId',
-          to: 'mapItems.mapId',
+      maps: {
+        relation: Model.ManyToManyRelation,
+        modelClass: Map,
+        join: {
+          from: 'items.id',
+          through: {
+            from: 'mapItems.itemId',
+            to: 'mapItems.mapId',
+          },
+          to: 'maps.id',
         },
-        to: 'maps.id',
       },
-    },
-    stats: {
-      relation: Model.HasManyRelation,
-      modelClass: ItemStat,
-      join: {
-        from: 'items.id',
-        to: 'itemStats.itemId',
+      stats: {
+        relation: Model.HasManyRelation,
+        modelClass: ItemStat,
+        join: {
+          from: 'items.id',
+          to: 'itemStats.itemId',
+        },
       },
-    },
-  };
+    };
+  }
   static async fromAPI(items: Object) {
     const tags = await Tag.query();
     return Promise.all(Object.keys(items).map(async (id) => {
