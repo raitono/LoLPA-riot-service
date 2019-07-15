@@ -26,7 +26,7 @@ export class ItemService {
 
     const items = await Item.fromAPI(apiItems);
     await Item.query().upsertGraph(
-      items.filter(i => i.id === '1001'),
+      items,
       { relate: true, unrelate: true, insertMissing: true },
     );
   }

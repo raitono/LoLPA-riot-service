@@ -46,7 +46,7 @@ export class Item extends Model {
     return 'id';
   }
   static get jsonAttributes() {
-    return ['into'];
+    return ['from', 'into'];
   }
   static get relationMappings() {
     return {
