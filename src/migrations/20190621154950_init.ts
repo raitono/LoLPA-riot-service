@@ -13,6 +13,16 @@ exports.up = async function (knex: Knex) {
       table.dateTime('revisionDate').notNullable();
       table.dateTime('lastUpdated').notNullable().defaultTo(knex.fn.now());
     })
+    .createTable('images', (table) => {
+      table.increments('id').primary();
+      table.string('full');
+      table.string('sprite');
+      table.string('group');
+      table.integer('x');
+      table.integer('y');
+      table.integer('w');
+      table.integer('h');
+    })
     .createTable('champions', (table) => {
       table.integer('id').primary();
       table.string('name').notNullable();
@@ -118,14 +128,45 @@ exports.up = async function (knex: Knex) {
       table.increments('id').primary();
       table.string('itemId');
       table.string('group');
-      table.decimal('value', 8, 3).notNullable();
+      table.decimal('value', 7, 3).notNullable();
       table.unique(['itemId', 'group']);
+    })
+    .createTable('modes', (table) => {
+      table.increments('id').primary();
+      table.string('name');
+    })
+    .createTable('summonerSpells', (table) => {
+      table.string('id').primary();
+      table.string('name');
+      table.text('description');
+      table.text('tooltip');
+      table.integer('maxrank');
+      table.string('cooldown');
+      table.string('cooldownBurn');
+      table.string('datavalues');
+      table.string('effect');
+      table.string('effectBurn');
+      table.string('vars');
+      table.string('key');
+      table.integer('summonerLevel');
+      table.string('costType');
+      table.string('maxammo');
+      table.string('range');
+      table.string('rangeBurn');
+      table.string('resource');
+      table.integer('imageId');
+    })
+    .createTable('summonerSpellModes', (table) => {
+      table.string('summonerSpellId');
+      table.integer('modeId');
+      table.unique(['summonerSpellId', 'modeId']);
     })
     ;
 };
 
 exports.down = async function (knex: Knex) {
-  return knex.schema.dropTable('summoners').dropTable('championTags')
+  return knex.schema.dropTable('summoners').dropTable('championTags').dropTable('images')
     .dropTable('champions').dropTable('itemTags').dropTable('tags').dropTable('items')
-    .dropTable('maps').dropTable('mapItems').dropTable('itemstats');
+    .dropTable('maps').dropTable('mapItems').dropTable('itemstats').dropTable('modes')
+    .dropTable('summonerSpells').dropTable('summonerSpellModes');
 };
