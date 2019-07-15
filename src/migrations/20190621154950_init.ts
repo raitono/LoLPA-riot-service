@@ -116,7 +116,7 @@ exports.up = async function (knex: Knex) {
     })
     .createTable('itemStats', (table) => {
       table.increments('id').primary();
-      table.string('itemId').notNullable();
+      table.string('itemId');
       table.string('group');
       table.decimal('value', 8, 3).notNullable();
       table.unique(['itemId', 'group']);

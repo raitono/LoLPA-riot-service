@@ -27,7 +27,7 @@ export class ItemService {
     const items = await Item.fromAPI(apiItems);
     await Item.query().upsertGraph(
       items,
-      { relate: true, unrelate: true, insertMissing: true },
+      { relate: true, insertMissing: true },
     );
   }
 }

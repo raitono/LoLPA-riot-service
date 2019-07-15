@@ -29,7 +29,7 @@ export class ChampionService {
 
     await Champion.query().upsertGraph(
       champions,
-      { relate: true, unrelate: true, insertMissing: true },
+      { relate: true, insertMissing: true },
     );
   }
 }
