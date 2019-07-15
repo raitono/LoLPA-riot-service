@@ -11,5 +11,9 @@ export class MapService {
     const apiMaps: Object = mapJSON.data;
 
     const maps = await Map.fromAPI(apiMaps);
+    await Map.query().upsertGraph(
+      maps,
+      { insertMissing: true },
+    );
   }
 }
