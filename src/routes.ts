@@ -17,12 +17,19 @@ summonerv4Router.get('/:name', SummonerV4Controller.getByName);
 summonerv4Router.get('/account/:accountId', SummonerV4Controller.getByAccountId);
 summonerv4Router.put('/:name', SummonerV4Controller.upsertByName);
 
+staticRouter.post(
+    '/patch',
+    MapController.patchMaps,
+    ItemController.patchItems,
+    ChampionController.patchChampions,
+);
+
 championRouter.get('/', ChampionController.getChampions);
-championRouter.get('/patch', ChampionController.patchChampions);
+championRouter.post('/patch', ChampionController.patchChampions);
 
-itemRouter.get('/patch', ItemController.patchItems);
+itemRouter.post('/patch', ItemController.patchItems);
 
-mapRouter.get('/patch', MapController.patchMaps);
+mapRouter.post('/patch', MapController.patchMaps);
 
 v4Router.use(
     summonerv4Router.routes(),
