@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "postinstall": "npm i -g npx",
-    "test": "echo \"Error: no test specified\" && exit 0",
+    "test": "tslint -p ./",
     "prebuild": "rm -rf out/",
     "build": "tsc",
     "build:watch": "npm run prebuild && tsc -w",

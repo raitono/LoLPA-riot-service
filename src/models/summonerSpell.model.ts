@@ -72,10 +72,10 @@ export class SummonerSpell extends Model {
       spell.maxrank = apiSpell.maxrank;
       spell.cooldown = apiSpell.cooldown;
       spell.cooldownBurn = apiSpell.cooldownBurn;
-      spell.datavalues = apiSpell.datavalues
+      spell.datavalues = apiSpell.datavalues;
       spell.effect = apiSpell.effect;
       spell.effectBurn = apiSpell.effectBurn;
-      spell.vars = apiSpell.vars
+      spell.vars = apiSpell.vars;
       spell.key = apiSpell.key;
       spell.summonerLevel = apiSpell.summonerLevel;
       spell.costType = apiSpell.costType;
