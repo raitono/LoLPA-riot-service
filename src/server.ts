@@ -7,13 +7,21 @@ const server = app.listen(0);
 const port = (<AddressInfo>server.address()).port;
 
 const register = async () => {
-  await axios.put(`${process.env.REGISTRY_URL}:${process.env.REGISTRY_PORT}`
-  + `/service/register/${process.env.SERVICE_NAME}/${process.env.npm_package_version}/${port}`);
+  try {
+    await axios.put(`${process.env.REGISTRY_URL}:${process.env.REGISTRY_PORT}`
+    + `/service/register/${process.env.SERVICE_NAME}/${process.env.npm_package_version}/${port}`);
+  } catch (error) {
+    debug('Unable to register service');
+  }
 };
 
 const unregister = async () => {
-  await axios.delete(`${process.env.REGISTRY_URL}:${process.env.REGISTRY_PORT}`
-  + `/service/register/${process.env.SERVICE_NAME}/${process.env.npm_package_version}/${port}`);
+  try {
+    await axios.delete(`${process.env.REGISTRY_URL}:${process.env.REGISTRY_PORT}`
+    + `/service/register/${process.env.SERVICE_NAME}/${process.env.npm_package_version}/${port}`);
+  } catch (error) {
+    debug('Unable to unregister service');
+  }
 };
 
 const interval = setInterval(register, Number(process.env.REGISTER_INTERVAL) * 1000);
