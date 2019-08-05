@@ -9,7 +9,7 @@ const kayn = Kayn(process.env.RIOT_API_KEY)({ debugOptions: { isEnabled: true } 
 export class RuneService {
   static async patchRunes() {
     const runeJSON: Object = await kayn.DDragon.RunesReforged.list();
-    //debug(runeJSON);
+    // debug(runeJSON);
     // await http.get('http://ddragon.leagueoflegends.com/realms/na.json', (res) => {
     //   let data = '';
 
