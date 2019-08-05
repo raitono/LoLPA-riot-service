@@ -161,6 +161,23 @@ exports.up = async function (knex: Knex) {
       table.integer('modeId');
       table.unique(['summonerSpellId', 'modeId']);
     })
+    .createTable('runeStyles', (table) => {
+      table.integer('id').primary();
+      table.string('key');
+      table.string('icon');
+      table.string('name');
+    })
+    .createTable('runes', (table) => {
+      table.integer('id').primary();
+      table.string('key');
+      table.string('icon');
+      table.string('name');
+      table.text('shortDesc');
+      table.text('longDesc');
+      table.integer('row');
+      table.integer('col');
+      table.integer('styleId');
+    })
     ;
 };
 
@@ -168,5 +185,6 @@ exports.down = async function (knex: Knex) {
   return knex.schema.dropTable('summoners').dropTable('championTags').dropTable('images')
     .dropTable('champions').dropTable('itemTags').dropTable('tags').dropTable('items')
     .dropTable('maps').dropTable('mapItems').dropTable('itemstats').dropTable('modes')
-    .dropTable('summonerSpells').dropTable('summonerSpellModes');
+    .dropTable('summonerSpells').dropTable('summonerSpellModes').dropTable('runes')
+    .dropTable('runeStyles');
 };
