@@ -7,8 +7,7 @@ const kayn = Kayn(process.env.RIOT_API_KEY)();
 
 export class MapService {
   static async patchMaps() {
-    const mapJSON: Object = await kayn.DDragon.Map.list();
-    const apiMaps: Object = mapJSON.data;
+    const apiMaps = await kayn.DDragon.Map.list();
 
     const maps = await Map.fromAPI(apiMaps);
     await Map.query().upsertGraph(

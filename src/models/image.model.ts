@@ -1,4 +1,5 @@
 import { Model } from 'objection';
+import { DDragonImageDTO } from 'kayn/typings/dtos';
 
 export class Image extends Model {
   id: string;
@@ -16,7 +17,7 @@ export class Image extends Model {
   static get idColumn() {
     return 'id';
   }
-  static async fromAPI(apiImage: Object) {
+  static async fromAPI(apiImage: DDragonImageDTO) {
     const dbImage = (await Image.query().findOne('full', apiImage.full));
     const image = new Image();
     image.id = dbImage ? dbImage.id : null;

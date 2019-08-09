@@ -1,6 +1,7 @@
 import { Model } from 'objection';
 import { Image } from './image.model';
 import { Mode } from './mode.model';
+import { DDragonSummonerSpellDTO } from 'kayn/typings/dtos';
 
 export class SummonerSpell extends Model {
   id: string;
@@ -59,11 +60,11 @@ export class SummonerSpell extends Model {
       },
     };
   }
-  static async fromAPI(spells: Object) {
+  static async fromAPI(spells: DDragonSummonerSpellDTO) {
     const dbModes = await Mode.query();
-    return Promise.all(Object.keys(spells).map(async (id) => {
+    return Promise.all(Object.keys(spells.data).map(async (id) => {
       const spell = new SummonerSpell();
-      const apiSpell: Object = spells[id];
+      const apiSpell = spells.data[id];
 
       spell.id = apiSpell.id;
       spell.name = apiSpell.name;

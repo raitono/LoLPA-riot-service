@@ -1,5 +1,6 @@
 import { Model } from 'objection';
 import { Item } from '../models/item.model';
+import { DDragonMapDTO } from 'kayn/typings/dtos';
 
 export class Map extends Model {
   id: string;
@@ -35,8 +36,9 @@ export class Map extends Model {
       },
     };
   }
-  static async fromAPI(maps: Object) {
-    return Promise.all(Object.keys(maps).map((id: string) => {
+  static async fromAPI(apiMaps: DDragonMapDTO) {
+    const maps = apiMaps.data;
+    return Promise.all(Object.keys(maps).map((id) => {
       const map = new Map();
       map.id = id;
       map.name = maps[id].MapName;

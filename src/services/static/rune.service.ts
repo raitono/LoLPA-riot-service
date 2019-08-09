@@ -8,7 +8,7 @@ const kayn = Kayn(process.env.RIOT_API_KEY)({ debugOptions: { isEnabled: true } 
 
 export class RuneService {
   static async patchRunes() {
-    const apiRuneJSON: Object[] = await kayn.DDragon.RunesReforged.list()
+    const apiRuneJSON = await kayn.DDragon.RunesReforged.list()
       .version((await kayn.DDragon.Version.list())[0]);
     const runes = await Rune.fromAPI(apiRuneJSON);
     const dbRuneStyles = (await RuneStyle.query().select('runeStyles.id')).map(s => s.id);

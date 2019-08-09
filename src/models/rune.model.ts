@@ -1,5 +1,6 @@
 import { Model } from 'objection';
 import { RuneStyle } from './runeStyle.model';
+import { DDragonRunesReforgedDTO } from 'kayn/typings/dtos';
 
 export class Rune extends Model {
   id: number;
@@ -31,9 +32,9 @@ export class Rune extends Model {
       },
     };
   }
-  static async fromAPI(runeJSON: Object[]) {
+  static async fromAPI(dDragonRunes: DDragonRunesReforgedDTO) {
     const runes: Rune[] = [];
-    runeJSON.map((apiRuneStyle) => {
+    dDragonRunes.runeStyles.map((apiRuneStyle) => {
       const runeStyle: RuneStyle = new RuneStyle();
       let row = 0;
       let col = 0;

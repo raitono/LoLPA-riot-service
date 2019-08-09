@@ -9,9 +9,7 @@ const kayn = Kayn(process.env.RIOT_API_KEY)();
 export class ItemService {
   static async patchItems() {
     const apiTags: Set<string> = new Set();
-    const itemJSON: Object = await kayn.DDragon.Item.list();
-    const basicItem: Object = itemJSON.basic;
-    const apiItems: Object = itemJSON.data;
+    const apiItems = await kayn.DDragon.Item.list();
 
     // Grab all the tags from the API
     // Use a Set to prevent duplicates
