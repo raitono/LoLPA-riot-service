@@ -13,9 +13,9 @@ export class ItemService {
 
     // Grab all the tags from the API
     // Use a Set to prevent duplicates
-    Object.keys(apiItems).forEach((itemId) => {
-      const apiItem = apiItems[itemId];
-      apiItem.tags.forEach((tag: string) => {
+    Object.keys(apiItems.data).forEach((itemId) => {
+      const apiItem = apiItems.data[itemId];
+      apiItem.tags.forEach((tag) => {
         apiTags.add(tag);
       });
     });

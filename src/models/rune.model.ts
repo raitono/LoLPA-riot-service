@@ -2,6 +2,8 @@ import { Model } from 'objection';
 import { RuneStyle } from './runeStyle.model';
 import { DDragonRunesReforgedDTO } from 'kayn/typings/dtos';
 
+const debug: any = require('debug')('riot-service:RuneModel');
+
 export class Rune extends Model {
   id: number;
   key: string;
@@ -32,9 +34,10 @@ export class Rune extends Model {
       },
     };
   }
-  static async fromAPI(dDragonRunes: DDragonRunesReforgedDTO) {
+  static async fromAPI(dDragonRunes: DDragonRunesReforgedDTO[]) {
     const runes: Rune[] = [];
-    dDragonRunes.runeStyles.map((apiRuneStyle) => {
+
+    dDragonRunes.map((apiRuneStyle) => {
       const runeStyle: RuneStyle = new RuneStyle();
       let row = 0;
       let col = 0;

@@ -13,9 +13,9 @@ export class SummonerSpellService {
 
     // Grab all the tags from the API
     // Use a Set to prevent duplicates
-    Object.keys(apiSpells).forEach((spellId) => {
-      const apiSpell = apiSpells[spellId];
-      apiSpell.modes.forEach((mode: string) => {
+    Object.keys(apiSpells.data).forEach((spellId) => {
+      const apiSpell = apiSpells.data[spellId];
+      apiSpell.modes.forEach((mode) => {
         apiModes.add(mode);
       });
     });
