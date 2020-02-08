@@ -8,20 +8,20 @@ const kayn = Kayn(process.env.RIOT_API_KEY)();
 
 export class SummonerSpellService {
   static async patchSpells() {
-    const spellsJSON: Object = (await kayn.DDragon.SummonerSpell.list()).data;
+    const apiSpells = await kayn.DDragon.SummonerSpell.list();
     const apiModes: Set<string> = new Set();
 
     // Grab all the tags from the API
     // Use a Set to prevent duplicates
-    Object.keys(spellsJSON).forEach((spellId) => {
-      const apiSpell = spellsJSON[spellId];
-      apiSpell.modes.forEach((mode: string) => {
+    Object.keys(apiSpells.data).forEach((spellId) => {
+      const apiSpell = apiSpells.data[spellId];
+      apiSpell.modes.forEach((mode) => {
         apiModes.add(mode);
       });
     });
 
     await Mode.upsertGraphFromList(apiModes);
-    const spells = await SummonerSpell.fromAPI(spellsJSON);
+    const spells = await SummonerSpell.fromAPI(apiSpells);
 
     await SummonerSpell.query().upsertGraph(
       spells,

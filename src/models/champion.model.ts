@@ -1,5 +1,6 @@
 import { Model } from 'objection';
 import { Tag } from './tag.model';
+import { DDragonChampionListDataDTO } from 'kayn/typings/dtos';
 
 export class Champion extends Model {
   id: string;
@@ -62,10 +63,10 @@ export class Champion extends Model {
       },
     };
   }
-  static async fromAPI(champs: Object) {
+  static async fromAPI(champs:{[key:string]: DDragonChampionListDataDTO}) {
     const tags = await Tag.query();
     return Promise.all(Object.keys(champs).map(async (id) => {
-      const apiChampion: Object = champs[id];
+      const apiChampion = champs[id];
       const dbChampion = new Champion();
 
       dbChampion.id = apiChampion.id;

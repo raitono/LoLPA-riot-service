@@ -2,6 +2,7 @@ import { Model } from 'objection';
 import { Tag } from './tag.model';
 import { Map } from './map.model';
 import { ItemStat } from './itemStat.model';
+import { DDragonItemWrapperDTO } from 'kayn/typings/dtos';
 
 export class Item extends Model {
   id: string;
@@ -84,17 +85,18 @@ export class Item extends Model {
       },
     };
   }
-  static async fromAPI(items: Object) {
+  static async fromAPI(apiItems: DDragonItemWrapperDTO) {
     const tags = await Tag.query();
+    const items = apiItems.data;
     return Promise.all(Object.keys(items).map(async (id) => {
       const item = new Item();
       const stats = await ItemStat.query().where('itemId', id);
-      const data: Object = items[id];
+      const data = items[id];
       const dataStatGroups = Object.keys(data.stats);
 
       item.id = id;
       item.name = data.name || '';
-      item.isRune = data.rune ? data.rune.isRune || false : false;
+      item.isRune = data.rune ? data.rune.isrune || false : false;
       item.runeTier = data.rune ? data.rune.tier || 1 : null;
       item.runeType = data.rune ? data.rune.type || 'red' : null;
       item.goldBase = data.gold ? data.gold.base || 0 : 0;

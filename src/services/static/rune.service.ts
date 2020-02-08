@@ -1,6 +1,6 @@
 import { Kayn } from 'kayn';
 import { Rune } from '../../models/rune.model';
-import * as http from 'http';
+import { RuneStyle } from '../../models/runeStyle.model';
 
 const debug: any = require('debug')('riot-service:RuneService');
 
@@ -8,29 +8,36 @@ const kayn = Kayn(process.env.RIOT_API_KEY)({ debugOptions: { isEnabled: true } 
 
 export class RuneService {
   static async patchRunes() {
-    const runeJSON: Object = await kayn.DDragon.RunesReforged.list();
-    //debug(runeJSON);
-    // await http.get('http://ddragon.leagueoflegends.com/realms/na.json', (res) => {
-    //   let data = '';
+    const apiRuneJSON = await kayn.DDragon.RunesReforged.list()
+      .version((await kayn.DDragon.Version.list())[0]);
+    const runes = await Rune.fromAPI(apiRuneJSON);
+    const dbRuneStyles = (await RuneStyle.query().select('runeStyles.id')).map(s => s.id);
 
-    //   // A chunk of data has been recieved.
-    //   res.on('data', (chunk) => {
-    //     data += chunk;
-    //   });
+    // Set up references used in upsert
+    // Prevents duplicate keys on creation
+    runes.map((r) => {
+      const j = JSON.stringify(r.style);
 
-    //   // The whole response has been received. Print out the result.
-    //   res.on('end', () => {
-    //     const jdata = JSON.parse(data);
-    //     const { n: versions } = jdata;
-    //     debug(versions);
-    //   });
-    // });
-    // const apiRunes: Object = runeJSON.data;
+      // If it's already in the database, we only need the id
+      if (dbRuneStyles.includes(r.styleId)) {
+        r.style = new RuneStyle();
+        r.style['#dbRef'] = r.styleId;
+      }
+      else {
+        // Only on the first rune of each style
+        if (r.row === 0 && r.col === 0) {
+          r.style['#id'] = r.styleId;
+        }
+        else {
+          r.style = new RuneStyle();
+          r.style['#ref'] = r.styleId;
+        }
+      }
+    });
 
-    // const runes = await Rune.fromAPI(apiRunes);
-    // await Rune.query().upsertGraph(
-    //   runes,
-    //   { insertMissing: true },
-    // );
+    await Rune.query().upsertGraph(
+      runes,
+      { insertMissing: true },
+    );
   }
 }

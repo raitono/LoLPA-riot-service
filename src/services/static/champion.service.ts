@@ -11,14 +11,14 @@ export class ChampionService {
     return await kayn.DDragon.Champion.listDataByIdWithParentAsId();
   }
   static async patchChampions() {
-    const c: {[key:string]: Object} = (await this.getChampions()).data;
+    const c = (await this.getChampions()).data;
     const apiTags: Set<string> = new Set();
 
     // Grab all the tags from the API
     // Use a Set to prevent duplicates
     Object.keys(c).forEach((championId) => {
       const apiChampion = c[championId];
-      apiChampion.tags.forEach((tag: string) => {
+      apiChampion.tags.forEach((tag) => {
         apiTags.add(tag);
       });
     });
